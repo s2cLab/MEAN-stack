@@ -10,5 +10,6 @@ router.get('/location/review/new', ctrlLocations.addReview);
 
 // Other pages
 router.get('/about', ctrlOthers.about);
+router.get('/gridSys', ctrlOthers.gridSys);
 
 module.exports = router;
