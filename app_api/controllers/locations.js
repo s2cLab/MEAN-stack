@@ -6,34 +6,6 @@ var sendJSONresponse = function(res, status, content) {
   res.json(content);
 };
 
-/* GET a location by the id */
-module.exports.locationsReadOne = function(req, res) {
-  console.log('Finding location details', req.params);
-  if (req.params && req.params.locationid) {
-    Loc
-      .findById(req.params.locationid)
-      .exec(function(err, location) {
-        if (!location) {
-          sendJSONresponse(res, 404, {
-            "message": "locationid not found"
-          });
-          return;
-        } else if (err) {
-          console.log(err);
-          sendJSONresponse(res, 404, err);
-          return;
-        }
-        console.log(location);
-        sendJSONresponse(res, 200, location);
-      });
-  } else {
-    console.log('No locationid specified');
-    sendJSONresponse(res, 404, {
-      "message": "No locationid in request"
-    });
-  }
-};
-
 var theEarth = (function() {
   var earthRadius = 6371; // km, miles is 3959
 
@@ -65,7 +37,7 @@ module.exports.locationsListByDistance = function(req, res) {
     maxDistance: theEarth.getRadsFromDistance(maxDistance),
     num: 10
   };
-  if (!lng || !lat || !maxDistance) {
+  if ((!lng && lng!==0) || (!lat && lat!==0) || ! maxDistance) {
     console.log('locationsListByDistance missing params');
     sendJSONresponse(res, 404, {
       "message": "lng, lat and maxDistance query parameters are all required"
@@ -99,6 +71,34 @@ var buildLocationList = function(req, res, results, stats) {
     });
   });
   return locations;
+};
+
+/* GET a location by the id */
+module.exports.locationsReadOne = function(req, res) {
+  console.log('Finding location details', req.params);
+  if (req.params && req.params.locationid) {
+    Loc
+      .findById(req.params.locationid)
+      .exec(function(err, location) {
+        if (!location) {
+          sendJSONresponse(res, 404, {
+            "message": "locationid not found"
+          });
+          return;
+        } else if (err) {
+          console.log(err);
+          sendJSONresponse(res, 404, err);
+          return;
+        }
+        console.log(location);
+        sendJSONresponse(res, 200, location);
+      });
+  } else {
+    console.log('No locationid specified');
+    sendJSONresponse(res, 404, {
+      "message": "No locationid in request"
+    });
+  }
 };
 
 /* POST a new location */

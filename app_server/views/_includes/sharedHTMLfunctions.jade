@@ -3,7 +3,7 @@ mixin outputRating(rating)
     span.glyphicon.glyphicon-star
   - for (i = rating; i < 5; i++)
     span.glyphicon.glyphicon-star-empty
-    
+
 mixin formatDate(dateString)
   -var date = new Date(dateString);
   -var d = date.getDate();
