@@ -17,8 +17,8 @@
     vm.message = "Checking your location";
 
     vm.getData = function () {
-      var lat = 51.378091,
-          lng = -0.7992599;
+      var lat = 127.14,
+          lng = 35.82;
       vm.message = "Searching for nearby places";
       loc8rData.locationByCoords(lat, lng)
         .success(function(data) {
